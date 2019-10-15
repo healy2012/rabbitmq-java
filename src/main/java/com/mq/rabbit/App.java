@@ -11,10 +11,14 @@ import java.util.concurrent.TimeoutException;
  */
 public class App {
 
-	public static void main(String[] args) throws IOException, TimeoutException {
+	public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
 		// 1、direct 交换器实现 => 请运行DirctExchange.java
 		// TODO:其他路由模式实现
 		directExchange.publisher();
+		
+		directExchange.consumer(config.QueueName);
+		
+		Thread.currentThread().join(10000);
 	}
 
 }

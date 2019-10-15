@@ -58,7 +58,7 @@ public class directExchange {
 				System.out.println(workName + "收到消息 => " + message);
 
 				try {
-					Thread.sleep(60 * 1000);
+					Thread.sleep(3 * 1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} finally {
