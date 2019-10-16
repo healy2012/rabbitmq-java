@@ -53,7 +53,8 @@ public class transactionExample {
 
 			long startTime = System.currentTimeMillis();
 
-			for (int i = 0; i < 10000; i++) {
+			int n = 10000;
+			for (int i = 0; i < n; i++) {
 				channel.txSelect(); // 声明事务
 				String message = String.format("时间 => %s", new Date().getTime());
 				// 发送消息
@@ -64,7 +65,7 @@ public class transactionExample {
 
 			long endTime = System.currentTimeMillis();
 
-			System.out.println("事务模式，发送1w条数据，执行花费时间：" + (endTime - startTime) + "s");
+			System.out.println("事务模式，发送"+n+"条数据，执行花费时间：" + (endTime - startTime) + "ms");
 
 		} catch (Exception e) {
 			channel.txRollback();
@@ -87,13 +88,25 @@ public class transactionExample {
 		Channel channel = conn.createChannel();
 		channel.queueDeclare(_queueName, true, false, false, null);
 		channel.txSelect();
+		
+		long starttime = System.currentTimeMillis();
+		
 		GetResponse resp = channel.basicGet(_queueName, false);
-		String message = new String(resp.getBody(), "UTF-8");
-		System.out.println("收到消息：" + message);
+		
+		while(resp!=null) {
+			String message = new String(resp.getBody(), "UTF-8");
+//			System.out.println("收到消息：" + message);
+			channel.basicAck(resp.getEnvelope().getDeliveryTag(), false); // 消息确认
+			channel.txCommit();
+			resp = channel.basicGet(_queueName, false);
+		}
+		
+		System.out.println("消费耗时："+(System.currentTimeMillis()-starttime));
 		// // 消息拒绝
 		// channel.basicReject(resp.getEnvelope().getDeliveryTag(), true);
-		channel.basicAck(resp.getEnvelope().getDeliveryTag(), false); // 消息确认
-		channel.txRollback();
+		
+		
+//		channel.txRollback();
 		channel.close();
 		conn.close();
 	}

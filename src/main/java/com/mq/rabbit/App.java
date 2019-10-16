@@ -1,6 +1,9 @@
 package com.mq.rabbit;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -11,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class App {
 
-	public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
+	public static void main(String[] args) throws Exception {
 		// 1、direct 交换器实现 => 请运行DirctExchange.java
 		// TODO:其他路由模式实现
 //		directExchange.publisher();
@@ -20,8 +23,15 @@ public class App {
 //		new App().fanoutExchange();	
 //		new App().topicExchage();
 		
-		new App().confirmMessage();
+//		new App().confirmMessage();
 		
+		new App().transaction();
+		
+	}
+	
+	public void transaction() throws KeyManagementException, NoSuchAlgorithmException, URISyntaxException, IOException, TimeoutException, Exception {
+		transactionExample.publish();
+		transactionExample.consume();
 	}
 	
 	public void confirmMessage() throws IOException, TimeoutException, InterruptedException {
