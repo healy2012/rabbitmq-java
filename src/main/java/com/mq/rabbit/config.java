@@ -13,4 +13,6 @@ public class config {
 	public static final String VHost = "/";
 
 	public static final String QueueName = "amp"; // 队列名称
+	
+	public static final int BatchSize = 1000;//批量处理数量
 }

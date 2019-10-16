@@ -50,7 +50,7 @@ public class fanoutExchange {
 			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 					byte[] body) throws IOException {
 				String message = new String(body, "UTF-8");
-				System.out.println(workName + "收到消息 => " + message);
+				System.out.println(Thread.currentThread().getName()+","+envelope.getDeliveryTag()+",["+workName + "]收到消息 => " + message);
 			}
 		};
 		channel.basicConsume(queueName, true, consumer);

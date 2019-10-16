@@ -53,7 +53,7 @@ public class topicExchange {
 			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 					byte[] body) throws IOException {
 				String message = new String(body, "UTF-8");
-				System.out.println(routingKey + "|收到消息 => " + message);
+				System.out.println(Thread.currentThread().getName()+","+envelope.getDeliveryTag()+",["+routingKey + "]收到消息 => " + message);
 			}
 		};
 		channel.basicConsume(queueName, true, consumer);
